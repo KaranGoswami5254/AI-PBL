@@ -1,0 +1,37 @@
+/* Reports Specific Styles */
+#print-area {
+    background: white;
+    padding: 20px;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #print-area, #print-area * {
+        visibility: visible;
+    }
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* Table styles */
+#expense-data th {
+    white-space: nowrap;
+}
+
+#expense-data td {
+    vertical-align: middle;
+}

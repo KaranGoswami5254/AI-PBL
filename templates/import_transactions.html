@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-file-earmark-arrow-up"></i> Import Transactions</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <form method="POST" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Select File</label>
+                            <input type="file" class="form-control" name="transaction_file" accept=".csv,.pdf,.ofx,.qif" required>
+                            <div class="form-text">
+                                Supported formats: 
+                                <span class="badge bg-secondary">CSV</span>
+                                <span class="badge bg-secondary">PDF</span>
+                                <span class="badge bg-secondary">OFX</span>
+                                <span class="badge bg-secondary">QIF</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">File Type</label>
+                            <select class="form-select" name="file_type">
+                                <option value="auto">Auto-detect</option>
+                                <option value="bank_statement">Bank Statement</option>
+                                <option value="credit_card">Credit Card</option>
+                                <option value="custom">Custom CSV</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload"></i> Import Transactions
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5><i class="bi bi-info-circle"></i> File Format Guidance</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6>CSV Format Example:</h6>
+                            <pre>Date,Description,Amount,Category,Payment Method
+2025-05-09,Grocery Store,125.50,  ,Credit Card
+2025-05-09,Gas Station,45.00,  ,Cash</pre>
+                            
+                            <h6 class="mt-3">PDF Bank Statements:</h6>
+                            <p>We automatically detect transactions from most major banks</p>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h5><i class="bi bi-lightning-charge"></i> Quick Import from Banks</h5>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-bank"></i> State Bank Of India
+                    </button>
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-credit-card"></i> Punjab National Bank
+                    </button>
+                    <button class="btn btn-outline-secondary">
+                        <i class="bi bi-piggy-bank"></i> Axis Bank
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

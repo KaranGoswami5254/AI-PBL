@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reports.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Spending by Category</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="categoryChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Monthly Spending</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="monthlyChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Expense Data</h5>
+                    <div>
+                        <a href="{{ url_for('export_csv') }}" class="btn btn-sm btn-light me-2">
+                            <i class="bi bi-download"></i> Export CSV
+                        </a>
+                        <button class="btn btn-sm btn-light print-btn">
+                            <i class="bi bi-printer"></i> Print
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="expense-data">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Total Spent</th>
+                                    <th>Percentage</th>
+                                    <th>Budget (if set)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for category, amount in categories.items() %}
+                                <tr>
+                                    <td>{{ category }}</td>
+                                    <td>${{ "%.2f"|format(amount) }}</td>
+                                    <td>{{ "%.1f"|format(amount / total_spent * 100) }}%</td>
+                                    <td>
+                                        {% if budgets %}
+                                            {% set budget = budgets|selectattr("category", "equalto", category)|first %}
+                                            {% if budget %}
+                                                ${{ "%.2f"|format(budget.amount) }} ({{ budget.period }})
+                                            {% else %}
+                                                No budget set
+                                            {% endif %}
+                                        {% else %}
+                                            No budget set
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Ensure Chart.js loads first -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Chart utils and reports logic -->
+<script src="{{ url_for('static', filename='js/chart-utils.js') }}"></script>
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+
+<!-- JavaScript-safe data passing -->
+<script>
+    const reportsData = {
+        categories: {{ categories | tojson | safe }},
+        totalSpent: {{ total_spent | tojson | safe }},
+        budgets: {{ budgets | tojson | safe }},
+        monthlyData: {
+            labels: {{ monthly_labels | tojson | safe }},
+            data: {{ monthly_data | tojson | safe }}
+        }
+    };
+
+    // Debug to check data is loaded
+    console.log("✅ reportsData:", reportsData);
+</script>
+{% endblock %}

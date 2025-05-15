@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Budgets{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Current Budgets</h5>
+            </div>
+            <div class="card-body">
+                {% if budgets %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Period</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for budget in budgets %}
+                                <tr>
+                                    <td>{{ budget.category }}</td>
+                                    <td>${{ "%.2f"|format(budget.amount) }}</td>
+                                    <td>{{ budget.period }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editBudgetModal{{ budget.id }}">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="{{ url_for('delete_budget', id=budget.id) }}" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p>No budgets set up yet. Create your first budget below.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Add/Edit Budget</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('manage_budgets') }}">
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Category</label>
+                        <select class="form-select" id="category" name="category" required>
+                            <option value="" selected disabled>Select a category</option>
+                            <option value="Food">Food</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Housing">Housing</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Education">Education</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="amount" name="amount" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="period" class="form-label">Period</label>
+                        <select class="form-select" id="period" name="period" required>
+                            <option value="monthly" selected>Monthly</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save Budget</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Budget Modals -->
+{% for budget in budgets %}
+<div class="modal fade" id="editBudgetModal{{ budget.id }}" tabindex="-1" aria-labelledby="editBudgetModalLabel{{ budget.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editBudgetModalLabel{{ budget.id }}">Edit Budget</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{{ url_for('manage_budgets') }}">
+                <div class="modal-body">
+                    <input type="hidden" name="budget_id" value="{{ budget.id }}">
+                    <div class="mb-3">
+                        <label for="category{{ budget.id }}" class="form-label">Category</label>
+                        <input type="text" class="form-control" id="category{{ budget.id }}" name="category" value="{{ budget.category }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="amount{{ budget.id }}" class="form-label">Amount</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="amount{{ budget.id }}" name="amount" value="{{ budget.amount }}" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="period{{ budget.id }}" class="form-label">Period</label>
+                        <select class="form-select" id="period{{ budget.id }}" name="period" required>
+                            <option value="weekly" {% if budget.period == 'weekly' %}selected{% endif %}>Weekly</option>
+                            <option value="monthly" {% if budget.period == 'monthly' %}selected{% endif %}>Monthly</option>
+                            <option value="yearly" {% if budget.period == 'yearly' %}selected{% endif %}>Yearly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

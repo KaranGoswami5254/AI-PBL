@@ -1,0 +1,36 @@
+/* Budgets Specific Styles */
+#budgets-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+#budgets-table tbody tr:hover {
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.budget-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Form styles */
+#budget-form .form-select, 
+#budget-form .form-control {
+    padding: 0.75rem;
+}
+
+/* Modal styles */
+#deleteModal .modal-header {
+    border-bottom: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #budget-form .btn {
+        padding: 0.5rem;
+    }
+    
+    #budgets-table td, 
+    #budgets-table th {
+        padding: 0.75rem 0.5rem;
+    }
+}

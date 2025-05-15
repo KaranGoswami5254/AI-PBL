@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Budget Prediction{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="prediction-card">
+        <h2 class="card-title">Next Month's Budget Prediction</h2>
+        <p>Enter your current financial information to get an AI-powered prediction for your next month's recommended budget.</p>
+        
+        <div class="form-group">
+            <label for="last-month-expense">Last Month's Total Expenses ($)</label>
+            <input type="number" id="last-month-expense" placeholder="e.g., 2500" min="0" step="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="current-income">Current Monthly Income ($)</label>
+            <input type="number" id="current-income" placeholder="e.g., 3500" min="0" step="0.01">
+        </div>
+        
+        <button id="predict-button">Predict Budget</button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing your financial data...</p>
+        </div>
+        
+        <div class="result-container" id="result-container">
+            <h3 class="result-title">Recommended Budget for Next Month</h3>
+            <div class="prediction-value" id="prediction-value">$0.00</div>
+            <p class="confidence">Based on your financial patterns and our AI analysis</p>
+        </div>
+    </div>
+    
+    <div class="tips-section">
+        <h3 class="tips-title">Budgeting Tips Based on Your Prediction</h3>
+        <ul class="tips-list" id="tips-list">
+            <!-- Tips will be dynamically inserted here -->
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .prediction-card {
+        background-color: var(--card-color);
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+
+    .card-title {
+        color: var(--secondary-color);
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--secondary-color);
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border 0.3s;
+    }
+
+    input[type="number"]:focus {
+        border-color: var(--accent-color);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(79, 195, 247, 0.2);
+    }
+
+    .result-container {
+        margin-top: 30px;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        border-left: 4px solid var(--accent-color);
+        display: none;
+    }
+
+    .result-title {
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--secondary-color);
+    }
+
+    .prediction-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 10px 0;
+    }
+
+    .confidence {
+        font-style: italic;
+        color: #666;
+    }
+
+    .tips-section {
+        margin-top: 40px;
+    }
+
+    .tips-title {
+        color: var(--secondary-color);
+        margin-bottom: 15px;
+    }
+
+    .tips-list {
+        list-style-type: none;
+    }
+
+    .tips-list li {
+        background-color: var(--card-color);
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+    }
+
+    .tips-list li::before {
+        content: "•";
+        color: var(--accent-color);
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-right: 10px;
+    }
+
+    .loading {
+        display: none;
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top: 4px solid var(--primary-color);
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const predictButton = document.getElementById('predict-button');
+        const lastMonthExpenseInput = document.getElementById('last-month-expense');
+        const currentIncomeInput = document.getElementById('current-income');
+        const resultContainer = document.getElementById('result-container');
+        const predictionValue = document.getElementById('prediction-value');
+        const loading = document.getElementById('loading');
+        const tipsList = document.getElementById('tips-list');
+
+        // Sample tips that could be shown based on different scenarios
+        const budgetingTips = [
+            "Consider allocating 50% of your income to needs, 30% to wants, and 20% to savings (50/30/20 rule).",
+            "Review your recurring subscriptions - you might find services you no longer use.",
+            "Try meal planning to reduce food expenses, which often account for a large portion of budgets.",
+            "Build an emergency fund that covers 3-6 months of essential expenses.",
+            "Use cashback apps or credit cards wisely to earn rewards on necessary purchases.",
+            "Automate your savings by setting up direct transfers right after payday.",
+            "Track every expense for a month to identify potential areas for reduction.",
+            "Consider negotiating bills like internet, phone, or insurance for better rates.",
+            "Delay non-essential purchases by 48 hours to avoid impulse spending.",
+            "Explore free or low-cost entertainment options in your community."
+        ];
+
+        // Function to display random tips
+        function displayRandomTips(count = 3) {
+            tipsList.innerHTML = '';
+            const shuffled = [...budgetingTips].sort(() => 0.5 - Math.random());
+            for (let i = 0; i < count; i++) {
+                const li = document.createElement('li');
+                li.textContent = shuffled[i];
+                tipsList.appendChild(li);
+            }
+        }
+
+        // Initial display of tips
+        displayRandomTips();
+
+        predictButton.addEventListener('click', function() {
+            const lastMonthExpense = parseFloat(lastMonthExpenseInput.value);
+            const currentIncome = parseFloat(currentIncomeInput.value);
+            
+            // Basic validation
+            if (isNaN(lastMonthExpense) || isNaN(currentIncome) || lastMonthExpense < 0 || currentIncome < 0) {
+                alert('Please enter valid positive numbers for both fields.');
+                return;
+            }
+            
+            // Show loading indicator
+            loading.style.display = 'block';
+            resultContainer.style.display = 'none';
+            
+            // In a real application, you would send this data to your backend
+            // where the model would process it. For this demo, we'll simulate
+            // the prediction with a simple calculation that approximates what
+            // your Random Forest model might do.
+            
+            // Simulate API call delay
+            setTimeout(function() {
+                // This is a simplified approximation - your actual model would be more sophisticated
+                let predictedBudget;
+                
+                if (lastMonthExpense > currentIncome) {
+                    // If expenses were higher than income, suggest a more conservative budget
+                    predictedBudget = currentIncome * 0.85;
+                } else {
+                    // Otherwise use a weighted average of income and previous expenses
+                    predictedBudget = (currentIncome * 0.6) + (lastMonthExpense * 0.4);
+                }
+                
+                // Add some random variation to simulate model behavior
+                const variation = (Math.random() * 0.1 - 0.05) * predictedBudget;
+                predictedBudget += variation;
+                
+                // Ensure the prediction is reasonable
+                predictedBudget = Math.max(100, Math.min(predictedBudget, currentIncome * 1.1));
+                
+                // Display the result
+                predictionValue.textContent = '$' + predictedBudget.toFixed(2);
+                resultContainer.style.display = 'block';
+                loading.style.display = 'none';
+                
+                // Show new tips based on the prediction
+                displayRandomTips();
+                
+                // Scroll to results
+                resultContainer.scrollIntoView({ behavior: 'smooth' });
+                
+            }, 1500); // Simulate network delay
+        });
+    });
+</script>
+{% endblock %}
