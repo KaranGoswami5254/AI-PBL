@@ -1,4 +1,4 @@
-:
+SMART EXPENSE TRACKER
 
 💸 Smart Expense Tracker
 A smart, AI-powered expense tracking web application built with Flask, HTML/CSS/JS, and SQLAlchemy. It helps users manage their personal finances effortlessly with intelligent categorization, budget prediction, and insightful visual reports.
