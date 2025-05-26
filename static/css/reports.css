@@ -1,4 +1,4 @@
-/* Reports Specific Styles */
+
 #print-area {
     background: white;
     padding: 20px;
@@ -27,7 +27,7 @@
     height: 300px;
 }
 
-/* Table styles */
+
 #expense-data th {
     white-space: nowrap;
 }

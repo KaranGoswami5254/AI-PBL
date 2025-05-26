@@ -1,5 +1,5 @@
 :root {
-    /* Modern Color Palette */
+    
     --primary-color: #4361ee;
     --primary-light: #4895ef;
     --primary-dark: #3a0ca3;
@@ -24,19 +24,19 @@
     flex-direction: column;
   }
   
-  /* Smooth scroll behavior */
+  
   html {
     scroll-behavior: smooth;
   }
   
-  /* Typography Enhancements */
+  
   h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     margin-bottom: 1rem;
     color: var(--dark-color);
   }
   
-  /* Card Enhancements */
+  
   .card {
     border: none;
     border-radius: 12px;
@@ -63,7 +63,7 @@
     padding: 24px;
   }
   
-  /* Button Enhancements */
+  
   .btn {
     padding: 10px 20px;
     border-radius: 8px;
@@ -94,7 +94,7 @@
     color: white;
   }
   
-  /* Navbar Enhancements */
+  
   .navbar {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     background: white !important;
@@ -124,7 +124,7 @@
     margin-right: 8px;
   }
   
-  /* Table Enhancements */
+  
   .table {
     color: var(--dark-color);
   }
@@ -153,7 +153,7 @@
     transform: translateX(4px);
   }
   
-  /* Progress Bar Enhancements */
+  
   .progress {
     height: 10px;
     border-radius: 5px;
@@ -165,7 +165,7 @@
     transition: width 1s ease-in-out;
   }
   
-  /* Form Enhancements */
+  
   .form-control, .form-select {
     padding: 12px 16px;
     border-radius: 8px;
@@ -184,7 +184,7 @@
     border-color: #e9ecef;
   }
   
-  /* Alert Enhancements */
+  
   .alert {
     border-radius: 8px;
     padding: 16px;
@@ -211,7 +211,7 @@
     border-left: 4px solid var(--danger-color);
   }
   
-  /* Footer Enhancements */
+  
   footer {
     margin-top: auto;
     background: var(--bg-gradient);
@@ -220,7 +220,7 @@
     text-align: center;
   }
   
-  /* Card Counter Enhancements */
+  
   .card-counter {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     margin: 8px;
@@ -292,7 +292,7 @@
     font-size: 18px;
   }
   
-  /* Modal Enhancements */
+  
   .modal-content {
     border: none;
     border-radius: 12px;
@@ -321,7 +321,7 @@
     background-color: #f8f9fa;
   }
   
-  /* Animations */
+  
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -339,7 +339,7 @@
     100% { transform: translateY(0px); }
   }
   
-  /* Loading Animation */
+  
   .loading-spinner {
     display: inline-block;
     width: 40px;
@@ -354,7 +354,7 @@
     to { transform: rotate(360deg); }
   }
   
-  /* Responsive Adjustments */
+  
   @media (max-width: 768px) {
     .card-body {
       padding: 20px;
@@ -370,7 +370,7 @@
     }
   }
   
-  /* Custom Scrollbar */
+  
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -390,7 +390,7 @@
     background: var(--primary-dark);
   }
   
-  /* Floating Action Button */
+  
   .fab {
     position: fixed;
     bottom: 30px;
@@ -420,29 +420,128 @@
   }
 
 
-  /* for darkmode */
-  /* Default Light Theme */
+
 :root {
+  
   --bg-color: #ffffff;
   --text-color: #111111;
+  --text-secondary: #333333;
   --card-bg: #f5f5f5;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  --link-color: #0066cc;
+  --link-hover: #004499;
+  --border-color: #dddddd;
+  --input-bg: #ffffff;
+  --button-bg: #f0f0f0;
+  --button-text: #333333;
+  --highlight-bg: #e6f2ff;
+  --code-bg: #f8f8f8;
 }
 
-/* Dark Theme Variables */
+
 body.dark-mode {
   --bg-color: #121212;
-  --text-color: #f0f0f0;
+  --text-color: #f5f5f5;
+  --text-secondary: #e0e0e0;
   --card-bg: #1e1e1e;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  --link-color: #4dabf7;
+  --link-hover: #74c0fc;
+  --border-color: #333333;
+  --input-bg: #2d2d2d;
+  --button-bg: #3a3a3a;
+  --button-text: #f0f0f0;
+  --highlight-bg: #2a3a4a;
+  --code-bg: #282c34;
 }
 
-/* Use variables in styling */
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-color);
+}
+
+p, li, span {
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--link-color);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
 
 .card, .navbar, .footer {
   background-color: var(--card-bg);
-  transition: background-color 0.3s;
+  box-shadow: 0 2px 4px var(--card-shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.card {
+  border: 1px solid var(--border-color);
+}
+
+
+input, textarea, select {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+button, .btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  filter: brightness(1.2);
+}
+
+
+pre, code {
+  background-color: var(--code-bg);
+  color: var(--text-color);
+}
+
+
+.highlight, mark {
+  background-color: var(--highlight-bg);
+  color: var(--text-color);
+}
+
+
+table {
+  border-color: var(--border-color);
+}
+
+th, td {
+  border-bottom: 1px solid var(--border-color);
+}
+
+
+.dark-mode img {
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.dark-mode img:hover {
+  opacity: 1;
+}
+
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}  

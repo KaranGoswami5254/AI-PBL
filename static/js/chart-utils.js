@@ -1,8 +1,8 @@
-// Shared chart functionality
+
 class ChartUtils {
     static initCategoryChart(ctx, data) {
         return new Chart(ctx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
                 labels: Object.keys(data),
                 datasets: [{
