@@ -7,31 +7,31 @@ from sklearn.metrics import classification_report
 import joblib
 
 def train_expense_model_logistic():
-    # Load and clean data
+    
     data = pd.read_csv('expense_dataset2.csv')
     data.dropna(inplace=True)
 
-    # Feature and target
+    
     X = data['description']
     y = data['category']
     
-    # Train-test split
+    
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # Create pipeline with Tfidf and Logistic Regression
+    
     model = make_pipeline(
         TfidfVectorizer(),
-        LogisticRegression(max_iter=1000)  # increase max_iter to ensure convergence
+        LogisticRegression(max_iter=1000)  
     )
 
-    # Train model
+    
     model.fit(X_train, y_train)
 
-    # Evaluate
+    
     y_pred = model.predict(X_test)
     print(classification_report(y_test, y_pred))
 
-    # Save model
+    
     joblib.dump(model, 'expense_categorizer_logistic.pkl')
     print("✅ Logistic Regression model saved as 'expense_categorizer_logistic.pkl'")
 
