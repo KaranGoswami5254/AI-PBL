@@ -20,7 +20,7 @@ from io import StringIO, BytesIO
 import PyPDF2
 from functools import wraps
 import numpy as np
-# model = joblib.load("budget_prediction_rf_model.pkl")
+
 app = Flask(__name__,static_url_path='/static')
 
 model_path = os.path.join(os.path.dirname(__file__), 'budget_prediction_rf_model.pkl')
@@ -182,11 +182,11 @@ def dashboard():
     today = datetime.now()
     start_of_month = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     
-    # Get recent expenses
+    
     recent_expenses = Expense.query.filter_by(user_id=user_id)\
         .order_by(Expense.date.desc()).limit(5).all()
     
-    # Get monthly expenses
+    
     monthly_expenses = Expense.query.filter(
     Expense.user_id == user_id,
     Expense.date >= start_of_month,
@@ -196,10 +196,10 @@ def dashboard():
     
     total_spent = sum(expense.amount for expense in monthly_expenses)
     
-    # Get budgets
+    
     budgets = Budget.query.filter_by(user_id=user_id).all()
     
-    # Calculate spending by category
+    
     categories = {}
     for expense in monthly_expenses:
         if expense.category in categories:
@@ -259,7 +259,7 @@ def add_expense():
 
 ALLOWED_EXTENSIONS = {'csv', 'pdf', 'ofx', 'qif'}
 
-# Check if the uploaded file has an allowed extension
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -557,17 +557,17 @@ def reports():
     expenses = Expense.query.filter_by(user_id=user_id).all()
     budgets = Budget.query.filter_by(user_id=user_id).all()
 
-    # Calculate category-wise and month-wise spending
+    
     categories = defaultdict(float)
     monthly_spending = defaultdict(float)
 
     for expense in expenses:
         categories[expense.category] += expense.amount
-        # Use "Apr" or "2025-04" format
+        
         month_label = expense.date.strftime("%b")  # or "%b %Y" for full
         monthly_spending[month_label] += expense.amount
 
-    # Sort by calendar month (not string order)
+    
     month_order = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
                    'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     
@@ -604,7 +604,7 @@ def predict_budget():
     try:
         data = request.get_json()
         
-        # Validate input
+        
         if not data or 'last_month_expense' not in data or 'current_income' not in data:
             return jsonify({'error': 'Missing required fields'}), 400
             
