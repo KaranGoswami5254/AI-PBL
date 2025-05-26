@@ -15,10 +15,10 @@ y = data['Next_Month_Budget']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Step 4: Initialize the Random Forest Regressor
+
 model = RandomForestRegressor(
-    n_estimators=100,       # number of trees
-    max_depth=10,           # control overfitting
+    n_estimators=100,      
+    max_depth=10,           
     random_state=42
 )
 
