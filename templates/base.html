@@ -10,7 +10,7 @@
   {% block extra_css %}{% endblock %}
 
   <style>
-    /* Theme color variables */
+    
     :root {
       --bg-color: #ffffff;
       --text-color: black;
@@ -58,7 +58,7 @@
 </head>
 
 <body>
-  <!-- 🌗 Dark Mode Toggle Button -->
+  
   <button id="toggle-dark" class="dark-toggle">🌙 Dark Mode</button>
 
 {% if 'user_id' in session %}
@@ -141,10 +141,10 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   {% block extra_js %}{% endblock %}
 
-  <!-- JavaScript for flash fade and dark mode -->
+  
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Flash messages fade out
+      
       const alerts = document.querySelectorAll('.alert');
       alerts.forEach(function(alert) {
         setTimeout(function() {
@@ -153,7 +153,7 @@
         }, 3000);
       });
 
-      // Dark mode toggle
+      
       const toggleBtn = document.getElementById('toggle-dark');
       const prefersDark = localStorage.getItem('theme') === 'dark';
 
