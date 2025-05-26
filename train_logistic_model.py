@@ -8,7 +8,7 @@ import joblib
 
 def train_expense_model_logistic():
     
-    data = pd.read_csv('expense_dataset2.csv')
+    data = pd.read_csv('new_dataset.csv')
     data.dropna(inplace=True)
 
     
