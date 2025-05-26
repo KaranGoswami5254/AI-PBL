@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container-fluid">
     <div class="row mb-4" id="summary-cards">
-        <!-- Cards will be populated by dashboard.js -->
+        
     </div>
 
     <div class="row">
@@ -29,7 +29,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Will be populated by JavaScript -->
+                                
                                 {% for expense in recent_expenses %}
     <tr>
         <td>{{ expense.date }}</td>
@@ -75,7 +75,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Will be populated by JavaScript -->
+                                
                             </tbody>
                         </table>
                     </div>
@@ -90,7 +90,7 @@
 <script src="{{ url_for('static', filename='js/chart-utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 <script>
-    // Pass data from Flask to JavaScript
+    
     const dashboardData = {
         totalSpent: {{ total_spent|tojson }},
         expenseCount: {{ recent_expenses|length|tojson }},

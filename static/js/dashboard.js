@@ -1,4 +1,4 @@
-// Dashboard specific functionality
+
 class Dashboard {
     static init() {
         this.renderSummaryCards();
@@ -106,5 +106,5 @@ class Dashboard {
     }
 }
 
-// Initialize when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', () => Dashboard.init());

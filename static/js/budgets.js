@@ -1,4 +1,4 @@
-// Budgets specific functionality
+
 class BudgetManager {
     static init() {
         this.currentEditId = null;
@@ -84,8 +84,7 @@ class BudgetManager {
 
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Form submission handled by normal POST request
-            // Additional JS validation could be added here if needed
+            
             form.submit();
         });
     }
@@ -114,5 +113,5 @@ class BudgetManager {
     }
 }
 
-// Initialize when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', () => BudgetManager.init());

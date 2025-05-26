@@ -35,7 +35,7 @@
     <div class="tips-section">
         <h3 class="tips-title">Budgeting Tips Based on Your Prediction</h3>
         <ul class="tips-list" id="tips-list">
-            <!-- Tips will be dynamically inserted here -->
+            
         </ul>
     </div>
 </div>
@@ -191,7 +191,7 @@
             "Explore free or low-cost entertainment options in your community."
         ];
 
-        // Function to display random tips
+        
         function displayRandomTips(count = 3) {
             tipsList.innerHTML = '';
             const shuffled = [...budgetingTips].sort(() => 0.5 - Math.random());
@@ -202,60 +202,56 @@
             }
         }
 
-        // Initial display of tips
+        
         displayRandomTips();
 
         predictButton.addEventListener('click', function() {
             const lastMonthExpense = parseFloat(lastMonthExpenseInput.value);
             const currentIncome = parseFloat(currentIncomeInput.value);
             
-            // Basic validation
+            
             if (isNaN(lastMonthExpense) || isNaN(currentIncome) || lastMonthExpense < 0 || currentIncome < 0) {
                 alert('Please enter valid positive numbers for both fields.');
                 return;
             }
             
-            // Show loading indicator
+            
             loading.style.display = 'block';
             resultContainer.style.display = 'none';
             
-            // In a real application, you would send this data to your backend
-            // where the model would process it. For this demo, we'll simulate
-            // the prediction with a simple calculation that approximates what
-            // your Random Forest model might do.
             
-            // Simulate API call delay
+            
+            
             setTimeout(function() {
-                // This is a simplified approximation - your actual model would be more sophisticated
                 let predictedBudget;
                 
                 if (lastMonthExpense > currentIncome) {
-                    // If expenses were higher than income, suggest a more conservative budget
+                   
                     predictedBudget = currentIncome * 0.85;
                 } else {
-                    // Otherwise use a weighted average of income and previous expenses
+                    
                     predictedBudget = (currentIncome * 0.6) + (lastMonthExpense * 0.4);
                 }
                 
-                // Add some random variation to simulate model behavior
+                
                 const variation = (Math.random() * 0.1 - 0.05) * predictedBudget;
                 predictedBudget += variation;
                 
-                // Ensure the prediction is reasonable
+                
                 predictedBudget = Math.max(100, Math.min(predictedBudget, currentIncome * 1.1));
                 
-                // Display the result
+                
                 predictionValue.textContent = '$' + predictedBudget.toFixed(2);
                 resultContainer.style.display = 'block';
                 loading.style.display = 'none';
                 
-                // Show new tips based on the prediction
+                
                 displayRandomTips();
                 
-                // Scroll to results
+                
                 resultContainer.scrollIntoView({ behavior: 'smooth' });
                 
-            }, 1500); // Simulate network delay
+            }, 1500); 
         });
     });
 </script>

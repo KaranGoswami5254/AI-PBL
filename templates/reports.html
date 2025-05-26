@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="container-fluid">
-    <!-- Flash messages -->
+    
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -99,14 +99,14 @@
 {% endblock %}
 
 {% block extra_js %}
-<!-- Ensure Chart.js loads first -->
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Chart utils and reports logic -->
+
 <script src="{{ url_for('static', filename='js/chart-utils.js') }}"></script>
 <script src="{{ url_for('static', filename='js/reports.js') }}"></script>
 
-<!-- JavaScript-safe data passing -->
+
 <script>
     const reportsData = {
         categories: {{ categories | tojson | safe }},
@@ -118,7 +118,7 @@
         }
     };
 
-    // Debug to check data is loaded
+    
     console.log("✅ reportsData:", reportsData);
 </script>
 {% endblock %}

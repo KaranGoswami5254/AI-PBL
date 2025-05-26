@@ -1,4 +1,4 @@
-// Reports specific functionality
+
 class Reports {
     static init() {
         this.initCharts();
@@ -8,7 +8,7 @@ class Reports {
     }
 
     static initCharts() {
-        // Category Chart
+        
         const categoryCtx = document.getElementById('categoryChart')?.getContext('2d');
         if (categoryCtx) {
             ChartUtils.initCategoryChart(categoryCtx, reportsData.categories);
@@ -65,5 +65,5 @@ class Reports {
     
 }
 
-// Initialize when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', () => Reports.init());

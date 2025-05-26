@@ -1,4 +1,4 @@
-/* Dashboard Specific Styles */
+
 .card-counter {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     margin: 8px;
@@ -70,7 +70,7 @@
     font-size: 18px;
 }
 
-/* Progress bars in budget table */
+
 .progress {
     height: 20px;
     background-color: #f1f3f5;

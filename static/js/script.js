@@ -1,6 +1,6 @@
-// Enhanced script.js for Smart Expense Tracker
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize components
+    
     initTooltips();
     initAutoClosingAlerts();
     initFormValidation();
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initPrintButtons();
 });
 
-// Initialize Bootstrap tooltips
+
 function initTooltips() {
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -20,7 +20,7 @@ function initTooltips() {
     });
 }
 
-// Auto-close alerts with animation
+
 function initAutoClosingAlerts() {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(alert => {
@@ -34,7 +34,7 @@ function initAutoClosingAlerts() {
     });
 }
 
-// Form validation with better UX
+
 function initFormValidation() {
     const forms = document.querySelectorAll('.needs-validation');
     forms.forEach(form => {
@@ -43,7 +43,7 @@ function initFormValidation() {
                 event.preventDefault();
                 event.stopPropagation();
                 
-                // Add shake animation to invalid fields
+                
                 const invalidFields = form.querySelectorAll(':invalid');
                 invalidFields.forEach(field => {
                     field.style.animation = 'shake 0.5s';
@@ -57,19 +57,19 @@ function initFormValidation() {
     });
 }
 
-// Data fetching with loading states
+
 function initDataFetching() {
-    // Update expense data with loading indicator
+    
     updateExpenseData();
     
-    // Set up periodic data refresh (every 2 minutes)
+    
     setInterval(() => {
         updateExpenseData();
         updateCategoryData();
     }, 120000);
 }
 
-// Enhanced expense data fetching
+
 async function updateExpenseData() {
     try {
         showLoading('#expenseTable');
@@ -89,7 +89,7 @@ async function updateExpenseData() {
     }
 }
 
-// Enhanced category data fetching
+
 async function updateCategoryData() {
     try {
         showLoading('#categoryChartContainer');
@@ -109,12 +109,12 @@ async function updateCategoryData() {
     }
 }
 
-// Render expense data with animations
+
 function renderExpenseData(data) {
     const tableBody = document.querySelector('#expenseTable tbody');
     if (!tableBody) return;
     
-    // Clear existing rows with fade out
+    
     const rows = tableBody.querySelectorAll('tr');
     rows.forEach(row => {
         row.style.transition = 'opacity 0.3s ease';
@@ -122,7 +122,7 @@ function renderExpenseData(data) {
         setTimeout(() => row.remove(), 300);
     });
     
-    // Add new rows with fade in
+    
     setTimeout(() => {
         data.forEach((expense, index) => {
             const row = document.createElement('tr');
@@ -148,17 +148,17 @@ function renderExpenseData(data) {
     }, 300);
 }
 
-// Update category chart with animation
+
 function updateCategoryChart(data) {
     const ctx = document.getElementById('categoryChart')?.getContext('2d');
     if (!ctx) return;
     
-    // Destroy existing chart if it exists
+    
     if (window.categoryChart) {
         window.categoryChart.destroy();
     }
     
-    // Create new chart with animation
+    
     window.categoryChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -206,9 +206,9 @@ function updateCategoryChart(data) {
     });
 }
 
-// Initialize UI interactions
+
 function initUIInteractions() {
-    // Smooth scroll to top
+    
     document.querySelector('.scroll-to-top')?.addEventListener('click', function(e) {
         e.preventDefault();
         window.scrollTo({
@@ -217,29 +217,29 @@ function initUIInteractions() {
         });
     });
     
-    // Floating action button
+    
     const fab = document.querySelector('.fab');
     if (fab) {
         fab.addEventListener('click', function() {
             window.location.href = '/add_expense';
         });
         
-        // Show/hide FAB on scroll
+        
         let lastScrollTop = 0;
         window.addEventListener('scroll', function() {
             const st = window.pageYOffset || document.documentElement.scrollTop;
             if (st > lastScrollTop) {
-                // Scrolling down
+                
                 fab.style.transform = 'translateY(100px)';
             } else {
-                // Scrolling up
+               
                 fab.style.transform = 'translateY(0)';
             }
             lastScrollTop = st <= 0 ? 0 : st;
         }, false);
     }
     
-    // Edit expense buttons
+    
     document.addEventListener('click', function(e) {
         if (e.target.closest('.edit-expense')) {
             const expenseId = e.target.closest('.edit-expense').dataset.id;
@@ -248,11 +248,11 @@ function initUIInteractions() {
     });
 }
 
-// Theme toggle functionality
+
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
-        // Check for saved theme preference
+        
         const currentTheme = localStorage.getItem('theme') || 'light';
         document.body.classList.toggle('dark-theme', currentTheme === 'dark');
         themeToggle.checked = currentTheme === 'dark';
@@ -269,7 +269,7 @@ function initThemeToggle() {
     }
 }
 
-// Print functionality
+
 function initPrintButtons() {
     document.querySelectorAll('.print-btn').forEach(btn => {
         btn.addEventListener('click', function() {
@@ -278,7 +278,7 @@ function initPrintButtons() {
     });
 }
 
-// Show loading indicator
+
 function showLoading(selector) {
     const element = document.querySelector(selector);
     if (element) {
@@ -289,7 +289,7 @@ function showLoading(selector) {
     }
 }
 
-// Hide loading indicator
+
 function hideLoading(selector) {
     const loader = document.querySelector(`${selector} #loadingSpinner`);
     if (loader) {
@@ -297,7 +297,7 @@ function hideLoading(selector) {
     }
 }
 
-// Show error toast notification
+
 function showErrorToast(message) {
     const toast = document.createElement('div');
     toast.className = 'toast show align-items-center text-white bg-danger border-0';
@@ -318,14 +318,14 @@ function showErrorToast(message) {
     
     document.body.appendChild(toast);
     
-    // Auto-remove after 5 seconds
+    
     setTimeout(() => {
         toast.style.transition = 'opacity 0.5s ease';
         toast.style.opacity = '0';
         setTimeout(() => toast.remove(), 500);
     }, 5000);
     
-    // Manual close
+    
     toast.querySelector('.btn-close').addEventListener('click', () => {
         toast.style.transition = 'opacity 0.5s ease';
         toast.style.opacity = '0';
@@ -333,16 +333,16 @@ function showErrorToast(message) {
     });
 }
 
-// Open edit expense modal (placeholder - would be implemented with actual API calls)
+
 function openEditExpenseModal(expenseId) {
-    // In a real implementation, we would fetch the expense data here
+    
     console.log('Editing expense with ID:', expenseId);
     
-    // Show a toast as placeholder
+    
     showErrorToast('Edit functionality would be implemented here');
 }
 
-// Add shake animation to CSS if not already present
+
 const style = document.createElement('style');
 style.textContent = `
     @keyframes shake {
