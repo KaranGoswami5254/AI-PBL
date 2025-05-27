@@ -2,9 +2,11 @@ import io
 import joblib
 expense_model=joblib.load('expense_categorizer_logistic.pkl')
 print("Model loaded successfully")
+import re
 import pandas as pd
 import pdfplumber
 import ofxparse
+from ofxparse import OfxParser
 from werkzeug.utils import secure_filename
 from collections import defaultdict
 from datetime import datetime
@@ -85,7 +87,7 @@ class Budget(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(50), nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    period = db.Column(db.String(20))  # 'weekly', 'monthly', 'yearly'
+    period = db.Column(db.String(20))  
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def to_dict(self):
@@ -344,7 +346,7 @@ def process_csv(filepath):
 
                     description = row['description'].strip()
 
-                    # 🧠 Auto categorization
+                    
                     raw_category = row.get('category', '').strip()
                     if raw_category:
                         category = raw_category
@@ -396,10 +398,12 @@ def process_pdf(filepath):
                             continue
 
                         amount = abs(float(amount_str.replace('$', '').replace(',', '').strip()))
+                        category=expense_model.predict([desc.strip()])[0]
                         transactions.append({
                             'date': parsed_date,
                             'description': desc.strip(),
-                            'amount': amount
+                            'amount': amount,
+                            'category':category
                         })
                     except:
                         continue
@@ -408,7 +412,6 @@ def process_pdf(filepath):
 def process_bank_statement(filepath):
     transactions = []
     if filepath.endswith('.ofx'):
-        from ofxparse import OfxParser
         with open(filepath) as f:
             ofx = OfxParser.parse(f)
             for txn in ofx.account.statement.transactions:
@@ -422,22 +425,22 @@ def process_bank_statement(filepath):
         with open(filepath) as f:
             current_txn = {}
             for line in f:
-                if line.startswith('D'):  # Date
+                if line.startswith('D'):  
                     for fmt in ['%Y-%m-%d', '%m/%d/%y', '%d/%m/%y']:
                         try:
                             current_txn['date'] = datetime.strptime(line[1:].strip(), fmt).date()
                             break
                         except ValueError:
                             continue
-                elif line.startswith('T'):  # Amount
+                elif line.startswith('T'):  
                     try:
                         amount_str = line[1:].replace('$', '').replace(',', '').strip()
                         current_txn['amount'] = abs(float(amount_str))
                     except:
                         continue
-                elif line.startswith('P'):  # Payee
+                elif line.startswith('P'):  
                     current_txn['description'] = line[1:].strip()
-                elif line.startswith('^'):  # End of record
+                elif line.startswith('^'):  
                     if 'date' in current_txn and 'amount' in current_txn and 'description' in current_txn:
                         transactions.append(current_txn)
                     current_txn = {}
@@ -564,7 +567,7 @@ def reports():
     for expense in expenses:
         categories[expense.category] += expense.amount
         
-        month_label = expense.date.strftime("%b")  # or "%b %Y" for full
+        month_label = expense.date.strftime("%b")  
         monthly_spending[month_label] += expense.amount
 
     

@@ -1,0 +1,18 @@
+from fpdf import FPDF
+
+pdf = FPDF()
+pdf.add_page()
+pdf.set_font("Arial", size=12)
+
+lines = [
+    "05/27/2025  Zomato Order           $45.00",
+    "05/27/2025  Uber Trip              $15.75",
+    "05/27/2025  Netflix Subscription   $12.99",
+    "05/27/2025  Electricity Bill       $100.50",
+    "05/27/2025  Grocery Store          $88.30",
+]
+
+for line in lines:
+    pdf.cell(200, 10, txt=line, ln=True)
+
+pdf.output("sample_statement.pdf")
