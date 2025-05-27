@@ -5,7 +5,7 @@ print("Model loaded successfully")
 import re
 import pandas as pd
 import pdfplumber
-import ofxparse
+from datetime import datetime
 from ofxparse import OfxParser
 from werkzeug.utils import secure_filename
 from collections import defaultdict
